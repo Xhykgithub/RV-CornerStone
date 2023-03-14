@@ -11,8 +11,8 @@ void Task_Control(void *Parameters) {
     while (1) {
         ControlMode = LEFT_SWITCH_BOTTOM && RIGHT_SWITCH_BOTTOM ? 2 : 1;
         if (ControlMode == 1) {
-            //遥控器模式
-            // PsAimEnabled  = LEFT_SWITCH_TOP && RIGHT_SWITCH_TOP;
+            // 遥控器模式
+            //  PsAimEnabled  = LEFT_SWITCH_TOP && RIGHT_SWITCH_TOP;
             FastmoveMode  = LEFT_SWITCH_TOP && RIGHT_SWITCH_TOP;
             MagzineOpened = LEFT_SWITCH_MIDDLE && RIGHT_SWITCH_TOP;
             FrictEnabled  = (LEFT_SWITCH_BOTTOM || LEFT_SWITCH_TOP);
@@ -23,11 +23,11 @@ void Task_Control(void *Parameters) {
             // SwingMode     = (LEFT_SWITCH_TOP && RIGHT_SWITCH_TOP) ? (HAS_SLIP_RING ? 3 : 4) : 0;
             SafetyMode = LEFT_SWITCH_BOTTOM && RIGHT_SWITCH_BOTTOM;
         } else if (ControlMode == 2) {
-            //键鼠模式
+            // 键鼠模式
             PsShootEnabled = 0;
             StirEnabled    = mouseData.pressLeft;
             PsAimEnabled   = mouseData.pressRight;
-            //摩擦轮
+            // 摩擦轮
             if (keyboardData.G && !keyboardData.Ctrl) {
                 FrictEnabled = 1;
             } else if (keyboardData.G && keyboardData.Ctrl) {
@@ -44,7 +44,7 @@ void Task_Control(void *Parameters) {
             }
             // 高射速模式
             FastShootMode = keyboardData.E;
-            //高速移动模式(关闭底盘功率上限，飞坡用)
+            // 高速移动模式(关闭底盘功率上限，飞坡用)
             FastmoveMode = keyboardData.Shift;
         }
         // 调试视觉用
@@ -170,7 +170,7 @@ void Task_Gimbal(void *Parameters) {
         } else if (ROBOT_WANG) {
             Motor_Yaw.input   = yawCurrent;
             Motor_Pitch.input = pitchCurrent;
-        } else if (ROBOT_SHARK) { //啥意思
+        } else if (ROBOT_SHARK) { // 啥意思
             Motor_Yaw.input   = yawCurrent;
             Motor_Pitch.input = pitchCurrent;
         }
@@ -192,7 +192,7 @@ void Task_Gimbal(void *Parameters) {
         // DebugData.debug6 = PID_Cloud_YawSpeed.output;
         // DebugData.debug7 = yawCurrent;
 
-        //任务间隔
+        // 任务间隔
         vTaskDelayUntil(&LastWakeTime, intervalms);
     }
     vTaskDelete(NULL);
@@ -297,7 +297,7 @@ void Task_Chassis(void *Parameters) {
             // 匀速旋转
             swingAngle += 1000 * interval;
         } else if (SwingMode == 4) {
-            swingModeEnabled = 1; //猫猫步
+            swingModeEnabled = 1; // 猫猫步
             swingInterval    = 0.40;
             // 先顺时旋转至45度位置, 后逆时旋转到-45度位置
             swingTimer += interval;
@@ -351,7 +351,7 @@ void Task_Chassis(void *Parameters) {
                 xRampStart    = 0;
             }
         }
-        //底盘跟随云台
+        // 底盘跟随云台
         vw = ABS(PID_Follow_Angle.error) < followDeadRegion ? 0 : (-1 * PID_Follow_Speed.output * DPS2RPS);
 
         // Host control
@@ -551,7 +551,7 @@ void Task_Fire_Stir(void *Parameters) {
             stirSpeed *= 1.5;
         }
 
-        //热量控制
+        // 热量控制
         maxShootHeat = ProtocolData.gameRobotstatus.shooter_id1_17mm_cooling_limit - ProtocolData.gameRobotstatus.shooter_id1_17mm_speed_limit * 2;
 
         // 输入射击模式
@@ -629,7 +629,7 @@ void Task_Fire_Frict(void *Parameters) {
                     targetSpeed = 6000;
                 else if (ProtocolData.gameRobotstatus.shooter_id1_17mm_speed_limit == 30)
                     targetSpeed = 7000;
-            } else if (ROBOT_SHARK) { //还没测
+            } else if (ROBOT_SHARK) { // 还没测
                 if (ProtocolData.gameRobotstatus.shooter_id1_17mm_speed_limit == 15)
                     targetSpeed = 4450;
                 else if (ProtocolData.gameRobotstatus.shooter_id1_17mm_speed_limit == 18)
